@@ -1,0 +1,15 @@
+{
+    "name": "PhotoDrum.com",
+    "description": "Уроки по Photoshop, Illustrator, Cinema 4D, WEB", 
+    "browser_action": {
+        "default_icon": {
+            "38": "icon.png"
+            }, 
+        "default_title": "PhotoDrum.com", 
+        "default_popup": "photodrum.html"
+    }, 
+	"manifest_version": 2,
+    "update_url": "http://clients2.google.com/service/update2/crx",
+    "content_security_policy": "script-src 'self' https://www.google.com; object-src 'self'",
+    "version": "2.0.0"
+}

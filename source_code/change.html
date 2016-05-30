@@ -1,0 +1,77 @@
+<html>
+<head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function parseFeed(url, container) {
+            $.ajax({
+                url: 'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=50&callback=?&q=' + encodeURIComponent(url),
+                dataType: 'json',
+                success: function(data) {
+                    // log object data in console
+                    console.log(data.responseData.feed);
+                    // append feed link and title in container
+                    $(container).append('<a href="' + url + '"><span class="iconicstroke-rss-alt"></span></a>');
+                    // $(container).append('<h1 class="feed">' + data.responseData.feed.title + '</h1>');
+                    // for each entry... *
+                    $.each(data.responseData.feed.entries, function(key, value) {
+                        // * create new date object and pass in entry date
+                        var date = new Date(value.publishedDate);
+                        // var thumbnail = entry.mediaGroups[0].contents[0].url;
+                        // * create months array
+                        var months = new Array(12);
+                        months[0] = 'Января';
+                        months[1] = 'Февраля';
+                        months[2] = 'Марта';
+                        months[3] = 'Апреля';
+                        months[4] = 'Мая';
+                        months[5] = 'Июня';
+                        months[6] = 'Июлья';
+                        months[7] = 'Августа';
+                        months[8] = 'Сентября';
+                        months[9] = 'Октября';
+                        months[10] = 'Ноября';
+                        months[11] = 'Декабря';
+                        // * parse month, day and year
+                        var month = date.getMonth();
+                        var day = date.getDate();
+                        var year = date.getFullYear();
+
+                        // * assign entry variables
+                        var title = '<h3 class="title"><a href="' + value.link + '" target="_blank">' + value.title + '</a></h3>';
+                        var time = '<p class="time">' + day + ' ' + months[month] + ', ' + year + '</p>';
+                        var snippet = '<p class="snippet">' + value.contentSnippet + '</p>';
+
+                        var content = document.createElement("content");
+                        content.innerHTML = value.content;
+                        var images = "";
+                        $(content).find('img').each(function() {
+                            images += this.outerHTML;
+                        });
+                        var img = '<p class="snippet">' + images + '</p>';
+                        var entry = '<div class="entry">' + title + img + time + snippet + '</div><br><br><br><br><br><br><br>';
+                        // * append entire entry in container
+                        $(container).append(entry);
+                    });
+                },
+                // if there's an error... *
+                error: function(errorThrown) {
+                    // * log error message in console
+                    console.log(errorThrown);
+                    // * show error message
+                    alert('Houston, we have a problem.');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            parseFeed('http://photodrum.com/feed/', '#csstricks');
+        });
+    </script>
+</head>
+
+<body>
+
+    <div id="csstricks"></div>
+
+</body </html>
